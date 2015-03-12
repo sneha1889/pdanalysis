@@ -26,10 +26,8 @@ for i = thresholdRowValue:rows
     end
 end
 sizeList = cat(2,sizeList(1),abs(diff(sizeList)));
-disp(sizeList)
 startrowList = endrowList-sizeList;
 [M,indexMax] = max(sizeList(:));
-disp(indexMax)
 pdivRow = startrowList(indexMax)+ 1 + row_offset;
 pdevRow = endrowList(indexMax)+ row_offset;
 end
