@@ -3,7 +3,6 @@
 % The work is a part of my master thesis.
 function [startrowList,endrowList,pdivRow,pdevRow,sizeList] = getpdivpdevrow(thresholdRowValue,frequencyPD, row_offset) 
 %% Gives the row value where pdiv and pdev voltage is found
-%n = -1;
 counter=0;
 indexMax=0;
 endrowList = [0];
@@ -68,10 +67,28 @@ for i = n:2:(rows)
 end %end for
 % to obtain the pdiv row array we subtract size of each set from its pdev
 % array
+% to solve the problem of sizelist - i.e counter inremented y 2 though the
+% pdev value is not. Hence al Pdiv's are actualpdiv-1
+if mod(endrowList,2) == 0
+% Means its an even row. hence no problem
+    sizeList=sizeList;
+else
+    sizeList= sizeList-1;
+end
 startrowList = endrowList-sizeList;
 % the largest set is our actual PD range
 [M,indexMax] = max(sizeList(:));
-pdivRow = startrowList(indexMax)+2+ row_offset;
+if mod(thresholdRowValue,2) == 0
+    % cycle is negative
+    cycle = -1;
+    % negative cycle we have removed 1 to start from +ve cycle. Therefore
+    % in the end we have add a buffer of 1 extra
+    pdivRow = startrowList(indexMax)+2+ row_offset; 
+else
+    %cycle is positive
+    cycle = 1; 
+    pdivRow = startrowList(indexMax)+1+ row_offset;
+end
 % when the PD ends with +ve cycle and the subsequent cycle is zero and -ve 
 %  then the actual pdev row is the negative row
 tempPdev = endrowList(indexMax)+ row_offset;
