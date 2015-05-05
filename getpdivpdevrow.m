@@ -69,26 +69,18 @@ end %end for
 % array
 % to solve the problem of sizelist - i.e counter inremented y 2 though the
 % pdev value is not. Hence al Pdiv's are actualpdiv-1
-if mod(endrowList,2) == 0
-% Means its an even row. hence no problem
-    sizeList=sizeList;
-else
-    sizeList= sizeList-1;
-end
+% for i = 1:indexsizeList
+%   if mod(endrowList(i),2) == 0
+% Means its an odd row(-ve). hence no problem
+%       sizeList(i)=sizeList(i);
+%    else
+%       sizeList(i)= sizeList(i)-1;
+%   end
+% end
 startrowList = endrowList-sizeList;
 % the largest set is our actual PD range
 [M,indexMax] = max(sizeList(:));
-if mod(thresholdRowValue,2) == 0
-    % cycle is negative
-    cycle = -1;
-    % negative cycle we have removed 1 to start from +ve cycle. Therefore
-    % in the end we have add a buffer of 1 extra
-    pdivRow = startrowList(indexMax)+2+ row_offset; 
-else
-    %cycle is positive
-    cycle = 1; 
-    pdivRow = startrowList(indexMax)+1+ row_offset;
-end
+
 % when the PD ends with +ve cycle and the subsequent cycle is zero and -ve 
 %  then the actual pdev row is the negative row
 tempPdev = endrowList(indexMax)+ row_offset;
@@ -96,6 +88,17 @@ if mod(tempPdev,2)== 0
     pdevRow=tempPdev+1;
 else
     pdevRow = tempPdev;
+end
+if mod(pdevRow,2) == 0
+    % cycle is +ve
+    cycle = 1;
+    pdivRow = startrowList(indexMax)+2+ row_offset; 
+else
+    %cycle is -ve
+    cycle = -1; 
+    % negative cycle we have removed 1 to start from +ve cycle. Therefore
+    % in the end we have add a buffer of 1 extra
+    pdivRow = startrowList(indexMax)+1+ row_offset;
 end
 end
 
