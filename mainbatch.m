@@ -1,6 +1,7 @@
 % Author: Snehalatha Radhakrishnan
 % This entire code was written to compute and analyse the PDIV and PDEV voltages
 % The work is a part of my master thesis.
+for i = 1:36
 [fileName,fPath] = uigetfile({'*.xlsx'});
 frequencyPD = xlsread(fullfile(fPath,fileName),'P:P');
 timeStamp = xlsread(fullfile(fPath,fileName),'O:O');
@@ -14,3 +15,4 @@ pdivVoltage = computevoltage(voltageValues, actTimeStamp,timeStamp,pdivRow);
 pdevVoltage = computevoltage(voltageValues, actTimeStamp,timeStamp,pdevRow);
 [maxPDCharge,freqMaxPD]=getmaxcharge(chargeValues);
 writexlsfile(fullfile(fPath,fileName),thresholdRowValue,thresholdVoltage,pdivRow,pdivVoltage,pdevRow,pdevVoltage,maxPDCharge,freqMaxPD);
+end
